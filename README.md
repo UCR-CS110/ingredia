@@ -1,13 +1,14 @@
 # Ingredia
 ## Tools Used
-- React (frontend), lucide-react, react-router-dom
-- NodeJS (backend)
+- **Frontend:** React, lucide-react, react-router-dom
+- **Backend:** NodeJS, Express
 
 ## Steps on How to Run/Deploy Code
 - Install: `npm install`
 - Frontend
     - Dev: `npm start`
     - Build: `npm run build` (deploy the `build/` folder to a static host)
+    - Open http://localhost:3000
 - Backend
     - `cd backend`
     - `node server.js`
