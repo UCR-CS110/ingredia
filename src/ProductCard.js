@@ -4,14 +4,13 @@ import { ReviewSection } from "./ReviewSection";
 export function ProductCard({ product, preferences }) {
   const [showIngredients, setShowIngredients] = useState(false);
 
-  const unsafe = product.ingredients.some((ingredient) =>
-    preferences.allergies.some((a) =>
-      ingredient.toLowerCase().includes(a.toLowerCase())
+  const unsafe =
+    (preferences.allergies || []).some((a) =>
+      (product.ingredients_raw || "").toLowerCase().includes(a.toLowerCase()),
     ) ||
-    preferences.avoidIngredients.some((a) =>
-      ingredient.toLowerCase().includes(a.toLowerCase())
-    )
-  );
+    (preferences.avoidIngredients || []).some((a) =>
+      (product.ingredients_raw || "").toLowerCase().includes(a.toLowerCase()),
+    );
 
   return (
     <div
@@ -55,7 +54,9 @@ export function ProductCard({ product, preferences }) {
         </div>
 
         <p style={{ fontWeight: "bold", marginTop: "16px" }}>
-          Score: {product.score}/100
+          {product.ingredients_raw
+            ? product.ingredients_raw.slice(0, 80) + "..."
+            : "No ingredients listed"}
         </p>
 
         <div
@@ -80,11 +81,9 @@ export function ProductCard({ product, preferences }) {
         </button>
 
         {showIngredients && (
-          <ul style={{ color: "#555" }}>
-            {product.ingredients.map((i) => (
-              <li key={i}>{i}</li>
-            ))}
-          </ul>
+          <div style={{ color: "#555", marginTop: "10px" }}>
+            {product.ingredients_raw || "No ingredients listed"}
+          </div>
         )}
 
         <ReviewSection />
