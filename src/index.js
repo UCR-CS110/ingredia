@@ -1,7 +1,17 @@
 import React from "react";
-import { createRoot } from "react-dom/client";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
+import AdminPage from "./AdminPage";
+import "./index.css";
 
-const container = document.getElementById("root");
-const root = createRoot(container);
-root.render(<App tab="home" />);
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<App />} />
+      <Route path="/admin/" element={<AdminPage />} />
+    </Routes>
+  </BrowserRouter>
+);
