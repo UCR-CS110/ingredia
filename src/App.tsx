@@ -276,71 +276,123 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa]">
-      <NavigationBar
-        onSearchChange={setSearchQuery}
-        onScanClick={() => setShowScan(true)}
-        currentUser={currentUser}
-        onLogout={handleLogout}
-      />
+  <div className="min-h-screen bg-gray-50">
+    <NavigationBar
+      onSearchChange={setSearchQuery}
+      onScanClick={() => setShowScan(true)}
+      currentUser={currentUser}
+      onLogout={handleLogout}
+    />
 
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
-        {/* Active Preferences Banner */}
-        {userPreferences && (userPreferences.dietaryRestrictions.length > 0 || userPreferences.allergies.length > 0) && (
-          <div className="mb-6 p-4 bg-white rounded-2xl border border-gray-100">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-semibold text-gray-900">Active Preferences</h3>
+    {/* Main Content */}
+    <main className="mx-auto max-w-md px-4 py-5">
+      {/* Welcome / Summary Card */}
+      <section className="mb-5 rounded-3xl bg-green-600 p-5 text-white shadow-sm">
+        <p className="text-sm text-green-50">Welcome back</p>
+        <h2 className="mt-1 text-2xl font-bold">Find healthier products</h2>
+        <p className="mt-2 text-sm leading-relaxed text-green-50">
+          Search, scan, and compare products based on ingredients, additives,
+          and your preferences.
+        </p>
+
+        <button
+          onClick={() => setShowScan(true)}
+          className="mt-4 w-full rounded-2xl bg-white py-3 text-sm font-semibold text-green-700 shadow-sm transition hover:bg-green-50"
+        >
+          Scan a Product
+        </button>
+      </section>
+
+      {/* Active Preferences Banner */}
+      {userPreferences &&
+        (userPreferences.dietaryRestrictions.length > 0 ||
+          userPreferences.allergies.length > 0) && (
+          <section className="mb-5 rounded-3xl border border-gray-100 bg-white p-4 shadow-sm">
+            <div className="mb-3 flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-bold text-gray-900">
+                  Active Preferences
+                </h3>
+                <p className="text-xs text-gray-500">
+                  Scores are personalized for you.
+                </p>
+              </div>
+
               <button
                 onClick={() => setShowPreferences(true)}
-                className="text-xs text-gray-500 hover:text-gray-700"
+                className="rounded-full bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-gray-200"
               >
                 Edit
               </button>
             </div>
+
             <div className="flex flex-wrap gap-2">
-              {userPreferences.dietaryRestrictions.map(dr => (
-                <span key={dr} className="px-2.5 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
+              {userPreferences.dietaryRestrictions.map((dr) => (
+                <span
+                  key={dr}
+                  className="rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700"
+                >
                   {dr}
                 </span>
               ))}
-              {userPreferences.allergies.map(allergy => (
-                <span key={allergy} className="px-2.5 py-1 bg-red-50 text-red-700 text-xs rounded-full">
+
+              {userPreferences.allergies.map((allergy) => (
+                <span
+                  key={allergy}
+                  className="rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-700"
+                >
                   No {allergy}
                 </span>
               ))}
             </div>
-          </div>
+          </section>
         )}
 
-        {/* Products Grid */}
-        {filteredProducts.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-gray-500">No products found. Try a different search.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {filteredProducts.map(product => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onClick={handleProductClick}
-              />
-            ))}
-          </div>
-        )}
-      </main>
+      {/* Section Header */}
+      <div className="mb-3 flex items-center justify-between">
+        <div>
+          <h2 className="text-lg font-bold text-gray-900">Products</h2>
+          <p className="text-sm text-gray-500">
+            {filteredProducts.length} products found
+          </p>
+        </div>
 
-      <UserPreferencesModal
-        isOpen={showPreferences}
-        onClose={() => setShowPreferences(false)}
-        onSave={handleSavePreferences}
-      />
+        <button
+          onClick={() => setShowPreferences(true)}
+          className="rounded-full bg-white px-3 py-2 text-xs font-semibold text-gray-600 shadow-sm ring-1 ring-gray-100 hover:bg-gray-50"
+        >
+          Preferences
+        </button>
+      </div>
 
-      <ScanModal
-        isOpen={showScan}
-        onClose={() => setShowScan(false)}
-      />
-    </div>
+      {/* Products List */}
+      {filteredProducts.length === 0 ? (
+        <div className="rounded-3xl bg-white px-6 py-12 text-center shadow-sm">
+          <p className="font-semibold text-gray-900">No products found</p>
+          <p className="mt-1 text-sm text-gray-500">
+            Try a different search term.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {filteredProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onClick={handleProductClick}
+            />
+          ))}
+        </div>
+      )}
+    </main>
+
+    <UserPreferencesModal
+      isOpen={showPreferences}
+      onClose={() => setShowPreferences(false)}
+      onSave={handleSavePreferences}
+    />
+
+    <ScanModal isOpen={showScan} onClose={() => setShowScan(false)} />
+  </div>
   );
 }
