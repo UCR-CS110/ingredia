@@ -1,21 +1,69 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { NavigationBar } from './components/NavigationBar';
 import { ProductCard } from './components/ProductCard';
 import { UserPreferencesModal } from './components/UserPreferencesModal';
 import { ScanModal } from './components/ScanModal';
 import { AuthPage } from './components/AuthPage';
 
+type UserRole = 'consumer' | 'medical_professional' | 'nutritionist';
+
+type SessionUser = {
+  username: string;
+  email: string;
+  phone: string;
+  role: UserRole;
+  status: 'verified' | 'pending_verification';
+  deviceId: string;
+  lastLoginAt: string;
+  securityNotice?: string;
+};
+
+function readSession(): SessionUser | null {
+  const rawSession = localStorage.getItem('ingredia_session');
+
+  if (!rawSession) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(rawSession) as SessionUser;
+
+    if (parsed && parsed.username) {
+      return parsed;
+    }
+  } catch {
+    return {
+      username: rawSession,
+      email: rawSession,
+      phone: '',
+      role: 'consumer',
+      status: 'verified',
+      deviceId: 'legacy-session',
+      lastLoginAt: '',
+    };
+  }
+
+  return null;
+}
+
+function formatRole(role: UserRole) {
+  return role
+    .split('_')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
 export default function App() {
-  const [currentUser, setCurrentUser] = useState(() => localStorage.getItem('ingredia_session'));
+  const [currentUser, setCurrentUser] = useState<SessionUser | null>(() => readSession());
   const [searchQuery, setSearchQuery] = useState('');
   const [showPreferences, setShowPreferences] = useState(false);
   const [showScan, setShowScan] = useState(false);
   const [userPreferences, setUserPreferences] = useState(null);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  function handleLogin(email) {
-    localStorage.setItem('ingredia_session', email);
-    setCurrentUser(email);
+  function handleLogin(session) {
+    localStorage.setItem('ingredia_session', JSON.stringify(session));
+    setCurrentUser(session);
   }
 
   function handleLogout() {
@@ -275,12 +323,14 @@ export default function App() {
     return <AuthPage onLogin={handleLogin} />;
   }
 
+  const currentUserLabel = `${currentUser.username} • ${formatRole(currentUser.role)}`;
+
   return (
   <div className="min-h-screen bg-gray-50">
     <NavigationBar
       onSearchChange={setSearchQuery}
       onScanClick={() => setShowScan(true)}
-      currentUser={currentUser}
+      currentUser={currentUserLabel}
       onLogout={handleLogout}
     />
 
@@ -295,6 +345,15 @@ export default function App() {
           and your preferences.
         </p>
 
+        <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold">
+          <span className="rounded-full bg-white/15 px-3 py-1 text-green-50">
+            Signed in as {currentUser.username}
+          </span>
+          <span className="rounded-full bg-white/15 px-3 py-1 text-green-50">
+            {formatRole(currentUser.role)} account
+          </span>
+        </div>
+
         <button
           onClick={() => setShowScan(true)}
           className="mt-4 w-full rounded-2xl bg-white py-3 text-sm font-semibold text-green-700 shadow-sm transition hover:bg-green-50"
@@ -302,6 +361,22 @@ export default function App() {
           Scan a Product
         </button>
       </section>
+
+      {currentUser.status === 'pending_verification' && (
+        <section className="mb-5 rounded-3xl border border-amber-200 bg-amber-50 p-4 text-amber-900 shadow-sm">
+          <h3 className="text-sm font-bold">Professional verification pending</h3>
+          <p className="mt-1 text-sm leading-relaxed">
+            Medical professional and nutritionist accounts stay in pending review until their license details are checked against official databases. You can keep using the demo, but production access should stay limited until verification is completed.
+          </p>
+        </section>
+      )}
+
+      {currentUser.securityNotice && (
+        <section className="mb-5 rounded-3xl border border-blue-200 bg-blue-50 p-4 text-blue-900 shadow-sm">
+          <h3 className="text-sm font-bold">New device login detected</h3>
+          <p className="mt-1 text-sm leading-relaxed">{currentUser.securityNotice}</p>
+        </section>
+      )}
 
       {/* Active Preferences Banner */}
       {userPreferences &&
