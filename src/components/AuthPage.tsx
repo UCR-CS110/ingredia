@@ -1,7 +1,7 @@
 import { useState, type FormEvent, type CSSProperties } from "react";
 
 type AuthPageProps = {
-  onLogin: (email: string) => void;
+  onLogin: (email: string, name: string) => void;
 };
 
 type PasswordChecks = {
@@ -29,6 +29,7 @@ function allPassing(checks: PasswordChecks): boolean {
 export function AuthPage({ onLogin }: AuthPageProps) {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -36,11 +37,7 @@ export function AuthPage({ onLogin }: AuthPageProps) {
 
   const checks = checkPassword(password);
 
-  function getUsers(): Record<string, string> {
-    return JSON.parse(localStorage.getItem("ingredia_users") || "{}");
-  }
-
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
 
@@ -49,21 +46,17 @@ export function AuthPage({ onLogin }: AuthPageProps) {
       return;
     }
 
-    const users = getUsers();
-
     if (mode === "login") {
-      if (!users[email]) {
-        setError("No account found with that email.");
-        return;
-      }
-
-      if (users[email] !== password) {
-        setError("Incorrect password.");
-        return;
-      }
-
-      localStorage.setItem("ingredia_session", email);
-      onLogin(email);
+      const res = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setError(data.error); return; }
+      localStorage.setItem("ingredia_session", data.email);
+      localStorage.setItem("ingredia_name", data.name || "");
+      onLogin(data.email, data.name || "");
       return;
     }
 
@@ -77,15 +70,16 @@ export function AuthPage({ onLogin }: AuthPageProps) {
       return;
     }
 
-    if (users[email]) {
-      setError("An account with that email already exists.");
-      return;
-    }
-
-    users[email] = password;
-    localStorage.setItem("ingredia_users", JSON.stringify(users));
-    localStorage.setItem("ingredia_session", email);
-    onLogin(email);
+    const res = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password, name }),
+    });
+    const data = await res.json();
+    if (!res.ok) { setError(data.error); return; }
+    localStorage.setItem("ingredia_session", data.email);
+    localStorage.setItem("ingredia_name", data.name || "");
+    onLogin(data.email, data.name || "");
   }
 
   function switchMode() {
@@ -93,18 +87,11 @@ export function AuthPage({ onLogin }: AuthPageProps) {
     setError("");
     setPassword("");
     setConfirmPassword("");
+    setName("");
   }
 
   const Req = ({ passing, label }: { passing: boolean; label: string }) => (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 6,
-        fontSize: 12,
-        color: passing ? "#27ae60" : "#aaa",
-      }}
-    >
+    <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: passing ? "#27ae60" : "#aaa" }}>
       <span>{passing ? "✓" : "○"}</span>
       <span>{label}</span>
     </div>
@@ -114,21 +101,24 @@ export function AuthPage({ onLogin }: AuthPageProps) {
     <div style={pageStyle}>
       <div style={cardStyle}>
         <h1 style={{ margin: "0 0 12px", fontSize: 48 }}>Ingredia</h1>
-
-        <p
-          style={{
-            color: "#555",
-            fontSize: 18,
-            marginTop: 0,
-            marginBottom: 24,
-          }}
-        >
-          {mode === "login"
-            ? "Read beyond ingredient labels."
-            : "Create your Ingredia account."}
+        <p style={{ color: "#555", fontSize: 18, marginTop: 0, marginBottom: 24 }}>
+          {mode === "login" ? "Read beyond ingredient labels." : "Create your Ingredia account."}
         </p>
 
         <form onSubmit={handleSubmit} style={formStyle}>
+          {mode === "signup" && (
+            <div>
+              <label style={labelStyle}>Name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Your name"
+                style={inputStyle}
+              />
+            </div>
+          )}
+
           <div>
             <label style={labelStyle}>Email</label>
             <input
@@ -142,7 +132,6 @@ export function AuthPage({ onLogin }: AuthPageProps) {
 
           <div>
             <label style={labelStyle}>Password</label>
-
             <div style={{ position: "relative" }}>
               <input
                 type={showPassword ? "text" : "password"}
@@ -151,12 +140,7 @@ export function AuthPage({ onLogin }: AuthPageProps) {
                 placeholder="Enter password"
                 style={{ ...inputStyle, paddingRight: 60 }}
               />
-
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                style={showButtonStyle}
-              >
+              <button type="button" onClick={() => setShowPassword(!showPassword)} style={showButtonStyle}>
                 {showPassword ? "Hide" : "Show"}
               </button>
             </div>
@@ -168,10 +152,7 @@ export function AuthPage({ onLogin }: AuthPageProps) {
               <Req passing={checks.hasUpper} label="One uppercase letter" />
               <Req passing={checks.hasLower} label="One lowercase letter" />
               <Req passing={checks.hasNumber} label="One number" />
-              <Req
-                passing={checks.hasSpecial}
-                label="One special character (!@#$...)"
-              />
+              <Req passing={checks.hasSpecial} label="One special character (!@#$...)" />
             </div>
           )}
 
@@ -183,15 +164,8 @@ export function AuthPage({ onLogin }: AuthPageProps) {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Re-enter password"
-                style={{
-                  ...inputStyle,
-                  borderColor:
-                    confirmPassword && confirmPassword !== password
-                      ? "#e74c3c"
-                      : "#ddd",
-                }}
+                style={{ ...inputStyle, borderColor: confirmPassword && confirmPassword !== password ? "#e74c3c" : "#ddd" }}
               />
-
               {confirmPassword && confirmPassword !== password && (
                 <p style={passwordMismatchStyle}>Passwords do not match</p>
               )}
@@ -206,9 +180,7 @@ export function AuthPage({ onLogin }: AuthPageProps) {
         </form>
 
         <p style={switchTextStyle}>
-          {mode === "login"
-            ? "Don't have an account?"
-            : "Already have an account?"}{" "}
+          {mode === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
           <button onClick={switchMode} style={switchButtonStyle}>
             {mode === "login" ? "Sign up" : "Sign in"}
           </button>
