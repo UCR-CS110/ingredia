@@ -1,14 +1,25 @@
 # Ingredia
 ## Tools Used
-- **Frontend:** React, lucide-react, react-router-dom
-- **Backend:** NodeJS, Express
+- Frontend:
+    [![React](https://img.shields.io/badge/-React-%2320232a.svg?style=flat-square&logo=react&logoColor=%2361DAFB)](https://react.dev/)
+    [![TypeScript](https://img.shields.io/badge/-TypeScript-%23007ACC.svg?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+    [![JavaScript](https://img.shields.io/badge/-JavaScript-%23323330.svg?style=flat-square&logo=javascript&logoColor=%23F7DF1E)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- Backend:
+    [![Node.js](https://img.shields.io/badge/-Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+    [![Express.js](https://img.shields.io/badge/-Express.js-000000?style=flat-square&logo=express&logoColor=white)](https://expressjs.com/)
+- Databases:
+    [![MongoDB](https://img.shields.io/badge/-MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 
 ## Steps on How to Run/Deploy Code
-- Install: `npm install`
+- Installations
+    - `npm install`
+    - `npm install lucide-react`
+    - `npm install mongodb mongoose bcryptjs dotenv`
+- Environment variables (ensure it's under backend/)
 - Frontend
     - Dev: `npm start`
-    - Build: `npm run build` (deploy the `build/` folder to a static host)
-    - Open http://localhost:3000
+        - Build: `npm run build` (deploy the `build/` folder to a static host)
+        - Open http://localhost:3000
 - Backend
     - `cd backend`
     - `node server.js`

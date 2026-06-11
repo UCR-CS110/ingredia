@@ -5,6 +5,7 @@ interface NavigationBarProps {
   onSearchChange: (query: string) => void;
   onScanClick: () => void;
   currentUser?: string | null;
+  currentUserName?: string;
   onLogout: () => void;
 }
 
@@ -12,6 +13,7 @@ export function NavigationBar({
   onSearchChange,
   onScanClick,
   currentUser,
+  currentUserName,
   onLogout,
 }: NavigationBarProps) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -25,20 +27,15 @@ export function NavigationBar({
   return (
     <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 shadow-sm backdrop-blur">
       <div className="mx-auto max-w-md px-4 py-3">
-        {/* Top Row */}
         <div className="mb-3 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-green-700">
-              Ingredia
-            </h1>
-
+            <h1 className="text-2xl font-bold tracking-tight text-green-700">Ingredia</h1>
             {currentUser && (
               <p className="max-w-[220px] truncate text-xs text-gray-400">
-                {currentUser}
+                {currentUserName ? currentUserName : currentUser}
               </p>
             )}
           </div>
-
           {currentUser && (
             <button
               onClick={onLogout}
@@ -50,11 +47,9 @@ export function NavigationBar({
           )}
         </div>
 
-        {/* Search + Scan Row */}
         <div className="flex items-center gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-
             <input
               type="text"
               placeholder="Search for a product"
@@ -63,7 +58,6 @@ export function NavigationBar({
               onChange={handleSearchChange}
             />
           </div>
-
           <button
             onClick={onScanClick}
             className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-green-600 text-white shadow-md transition hover:bg-green-700 active:scale-95"
