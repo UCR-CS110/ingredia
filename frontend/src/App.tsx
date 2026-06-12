@@ -1,10 +1,10 @@
-import { AuthPage } from './components/AuthPage';
+import { useState, useEffect } from 'react';
 import { NavigationBar } from './components/NavigationBar';
 import { ProductCard } from './components/ProductCard';
-import { Products } from './components/Products';
-import { ScanModal } from './components/ScanModal';
 import { UserPreferencesModal } from './components/UserPreferencesModal';
-import { useState, useEffect } from 'react';
+import { ScanModal } from './components/ScanModal';
+import { AuthPage } from './components/AuthPage';
+import { Products } from './components/Products';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<string | null>(() => localStorage.getItem('ingredia_session'));
@@ -32,30 +32,35 @@ export default function App() {
     setCurrentUserName('');
   }
 
-  // Fetch from real API
+  // Fetch products - on login load defaults, on search debounce 500ms
   useEffect(() => {
     if (!currentUser) return;
-    setLoadingProducts(true);
-    fetch(`http://localhost:5000/api/products?q=${encodeURIComponent(searchQuery || 'organic')}`)
-      .then(r => r.json())
-      .then(data => {
-        const mapped = (Array.isArray(data) ? data : []).map((p: any) => ({
-          id: String(p._id ?? Math.random()),
-          name: p.name || 'Unknown',
-          brand: p.brand || '',
-          category: p.category || 'Food',
-          image: p.image || '',
-          score: p.score ?? 50,
-          negatives: p.negatives ?? [],
-          positives: p.positives ?? [],
-          ingredients: p.ingredients_raw
-            ? p.ingredients_raw.split(',').map((s: string) => s.trim()).filter(Boolean)
-            : [],
-        }));
-        setAllProducts(mapped);
-      })
-      .catch(() => setAllProducts([]))
-      .finally(() => setLoadingProducts(false));
+    const query = searchQuery.trim();
+    const delay = query ? 500 : 0; // instant on login, debounced on search
+    const timer = setTimeout(() => {
+      setLoadingProducts(true);
+      fetch(`http://localhost:5000/api/products?q=${encodeURIComponent(query || 'cereal')}`)
+        .then(r => r.json())
+        .then(data => {
+          const mapped = (Array.isArray(data) ? data : []).map((p: any) => ({
+            id: String(p._id ?? Math.random()),
+            name: p.name || 'Unknown',
+            brand: p.brand || '',
+            category: p.category || 'Food',
+            image: p.image || '',
+            score: p.score ?? 50,
+            negatives: p.negatives ?? [],
+            positives: p.positives ?? [],
+            ingredients: p.ingredients_raw
+              ? p.ingredients_raw.split(',').map((s: string) => s.trim()).filter(Boolean)
+              : [],
+          }));
+          setAllProducts(mapped);
+        })
+        .catch(() => setAllProducts([]))
+        .finally(() => setLoadingProducts(false));
+    }, delay);
+    return () => clearTimeout(timer);
   }, [currentUser, searchQuery]);
 
   useEffect(() => {

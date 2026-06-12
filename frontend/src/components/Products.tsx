@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X, Star } from "lucide-react";
+import { X, Star, AlertTriangle, CheckCircle2, Plus, Droplets, Flame, Wheat } from "lucide-react";
 
 interface Review {
   _id: string;
@@ -9,6 +9,13 @@ interface Review {
   createdAt: string;
 }
 
+interface ProductIssue {
+  icon: "plus" | "droplets" | "flame" | "wheat";
+  label: string;
+  value: string;
+  severity?: "low" | "medium" | "high";
+}
+
 interface Product {
   id: string | number;
   name: string;
@@ -16,6 +23,8 @@ interface Product {
   image: string;
   score: number;
   ingredients?: string[];
+  negatives?: ProductIssue[];
+  positives?: ProductIssue[];
 }
 
 interface ProductsProps {
@@ -39,6 +48,24 @@ export function Products({ product, currentUser, onClose }: ProductsProps) {
   }, [product]);
 
   if (!product) return null;
+
+  const negatives = product.negatives ?? [];
+  const positives = product.positives ?? [];
+
+  const renderIcon = (icon: ProductIssue["icon"]) => {
+    const className = "h-4 w-4";
+    if (icon === "plus") return <Plus className={className} />;
+    if (icon === "droplets") return <Droplets className={className} />;
+    if (icon === "flame") return <Flame className={className} />;
+    if (icon === "wheat") return <Wheat className={className} />;
+    return null;
+  };
+
+  const getSeverityColor = (severity?: string) => {
+    if (severity === "high") return "bg-red-500";
+    if (severity === "medium") return "bg-yellow-500";
+    return "bg-gray-300";
+  };
 
   async function handleSubmit() {
     if (!comment.trim()) return;
@@ -78,6 +105,59 @@ export function Products({ product, currentUser, onClose }: ProductsProps) {
         </div>
 
         <div className="flex-1 overflow-y-auto px-5 py-5 space-y-5 bg-gray-50">
+
+          {/* Positives + Negatives side by side */}
+          <section className="rounded-3xl bg-white p-4 shadow-sm">
+            <div className="grid grid-cols-2 gap-3">
+              {/* Positives - left */}
+              <div>
+                <div className="flex items-center gap-1 mb-2 text-green-700">
+                  <CheckCircle2 className="h-4 w-4" />
+                  <h3 className="text-xs font-bold uppercase">Positives</h3>
+                </div>
+                {positives.length === 0 ? (
+                  <p className="text-xs text-gray-400">None found</p>
+                ) : (
+                  <div className="space-y-2">
+                    {positives.map((item, i) => (
+                      <div key={i} className="rounded-2xl bg-green-50 px-3 py-2">
+                        <div className="flex items-center gap-1 mb-0.5">
+                          <div className="text-gray-500">{renderIcon(item.icon)}</div>
+                          <p className="text-xs font-semibold text-gray-900 leading-tight">{item.label}</p>
+                        </div>
+                        <p className="text-xs text-gray-500">{item.value}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Negatives - right */}
+              <div>
+                <div className="flex items-center gap-1 mb-2 text-red-700">
+                  <AlertTriangle className="h-4 w-4" />
+                  <h3 className="text-xs font-bold uppercase">Negatives</h3>
+                </div>
+                {negatives.length === 0 ? (
+                  <p className="text-xs text-gray-400">None found</p>
+                ) : (
+                  <div className="space-y-2">
+                    {negatives.map((item, i) => (
+                      <div key={i} className="rounded-2xl bg-red-50 px-3 py-2">
+                        <div className="flex items-center gap-1 mb-0.5">
+                          <div className="text-gray-500">{renderIcon(item.icon)}</div>
+                          <p className="text-xs font-semibold text-gray-900 leading-tight">{item.label}</p>
+                        </div>
+                        <p className="text-xs text-gray-500">{item.value}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+
+          {/* Ingredients */}
           {product.ingredients && product.ingredients.length > 0 && (
             <section className="rounded-3xl bg-white p-4 shadow-sm">
               <h3 className="text-sm font-bold text-gray-900 mb-2">Ingredients</h3>
@@ -85,6 +165,7 @@ export function Products({ product, currentUser, onClose }: ProductsProps) {
             </section>
           )}
 
+          {/* Leave a Review */}
           <section className="rounded-3xl bg-white p-4 shadow-sm">
             <h3 className="text-sm font-bold text-gray-900 mb-3">Leave a Review</h3>
             <div className="flex gap-1 mb-3">
@@ -110,6 +191,7 @@ export function Products({ product, currentUser, onClose }: ProductsProps) {
             </button>
           </section>
 
+          {/* Reviews */}
           <section className="space-y-3">
             <h3 className="text-sm font-bold text-gray-900">Reviews ({reviews.length})</h3>
             {reviews.length === 0 ? (

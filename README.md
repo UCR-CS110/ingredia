@@ -9,6 +9,7 @@
     [![Express.js](https://img.shields.io/badge/-Express.js-000000?style=flat-square&logo=express&logoColor=white)](https://expressjs.com/)
 - Databases:
     [![MongoDB](https://img.shields.io/badge/-MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+- Data: [Kaggle - Food Ingredients List](https://www.kaggle.com/datasets/datafiniti/food-ingredient-lists), Open Food Facts API
 
 ## Steps on How to Run/Deploy Code
 - Installations
@@ -16,14 +17,14 @@
     - `npm install lucide-react`
     - `npm install mongodb mongoose bcryptjs dotenv`
 - Environment variables (ensure it's under backend/)
+- Backend
+    - `cd backend && node seed.js`
+    - `cd backend && node server.js`
 - Frontend
     - `cd frontend`
     - Dev: `npm start`
         - Build: `npm run build` (deploy the `build/` folder to a static host)
         - Open http://localhost:3000
-- Backend
-    - `cd backend`
-    - `node server.js`
 
 ## Project Description
 - **Goal:** Help users evaluate product ingredients against personal dietary preferences and provide lightweight community reviews for safety-awareness.
