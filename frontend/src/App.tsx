@@ -1,22 +1,30 @@
-import { AuthPage } from './components/AuthPage';
+import { useState, useEffect } from 'react';
 import { NavigationBar } from './components/NavigationBar';
 import { ProductCard } from './components/ProductCard';
-import { Products } from './components/Products';
-import { ScanModal } from './components/ScanModal';
 import { UserPreferencesModal } from './components/UserPreferencesModal';
-import { useState, useEffect } from 'react';
+import { ScanModal } from './components/ScanModal';
+import { AuthPage } from './components/AuthPage';
+import { Products } from './components/Products';
+import { Profile } from './components/Profile';
+import { Dashboard } from './components/Dashboard';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<string | null>(() => localStorage.getItem('ingredia_session'));
   const [currentUserName, setCurrentUserName] = useState(() => localStorage.getItem('ingredia_name') || '');
+  const [currentUserRole, setCurrentUserRole] = useState(() => localStorage.getItem('ingredia_role') || 'explorer');
+  const [showDashboard, setShowDashboard] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showPreferences, setShowPreferences] = useState(false);
   const [showScan, setShowScan] = useState(false);
-  const [userPreferences, setUserPreferences] = useState<any>(null);
+  const [userPreferences, setUserPreferences] = useState<any>(() => {
+    const saved = localStorage.getItem('ingredia_preferences');
+    return saved ? JSON.parse(saved) : null;
+  });
   const [allProducts, setAllProducts] = useState<any[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [loadingProducts, setLoadingProducts] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   function handleLogin(email: string, name: string) {
     localStorage.setItem('ingredia_session', email);
@@ -30,32 +38,38 @@ export default function App() {
     localStorage.removeItem('ingredia_name');
     setCurrentUser(null);
     setCurrentUserName('');
+    setCurrentUserRole('explorer');
   }
 
-  // Fetch from real API
+  // Fetch products - on login load defaults, on search debounce 500ms
   useEffect(() => {
     if (!currentUser) return;
-    setLoadingProducts(true);
-    fetch(`http://localhost:5000/api/products?q=${encodeURIComponent(searchQuery || 'organic')}`)
-      .then(r => r.json())
-      .then(data => {
-        const mapped = (Array.isArray(data) ? data : []).map((p: any) => ({
-          id: String(p._id ?? Math.random()),
-          name: p.name || 'Unknown',
-          brand: p.brand || '',
-          category: p.category || 'Food',
-          image: p.image || '',
-          score: p.score ?? 50,
-          negatives: p.negatives ?? [],
-          positives: p.positives ?? [],
-          ingredients: p.ingredients_raw
-            ? p.ingredients_raw.split(',').map((s: string) => s.trim()).filter(Boolean)
-            : [],
-        }));
-        setAllProducts(mapped);
-      })
-      .catch(() => setAllProducts([]))
-      .finally(() => setLoadingProducts(false));
+    const query = searchQuery.trim();
+    const delay = query ? 500 : 0; // instant on login, debounced on search
+    const timer = setTimeout(() => {
+      setLoadingProducts(true);
+      fetch(`http://localhost:5000/api/products?q=${encodeURIComponent(query || 'cereal')}`)
+        .then(r => r.json())
+        .then(data => {
+          const mapped = (Array.isArray(data) ? data : []).map((p: any) => ({
+            id: String(p._id ?? Math.random()),
+            name: p.name || 'Unknown',
+            brand: p.brand || '',
+            category: p.category || 'Food',
+            image: p.image || '',
+            score: p.score ?? 50,
+            negatives: p.negatives ?? [],
+            positives: p.positives ?? [],
+            ingredients: p.ingredients_raw
+              ? p.ingredients_raw.split(',').map((s: string) => s.trim()).filter(Boolean)
+              : [],
+          }));
+          setAllProducts(mapped);
+        })
+        .catch(() => setAllProducts([]))
+        .finally(() => setLoadingProducts(false));
+    }, delay);
+    return () => clearTimeout(timer);
   }, [currentUser, searchQuery]);
 
   useEffect(() => {
@@ -99,8 +113,13 @@ export default function App() {
     setFilteredProducts(filtered);
   }, [allProducts, userPreferences]);
 
+  const handleProfileUpdate = (name: string) => {
+    setCurrentUserName(name);
+  };
+
   const handleSavePreferences = (preferences: any) => {
     setUserPreferences(preferences);
+    localStorage.setItem('ingredia_preferences', JSON.stringify(preferences));
   };
 
   const handleProductClick = (productId: string | number) => {
@@ -117,8 +136,11 @@ export default function App() {
       <NavigationBar
         onSearchChange={setSearchQuery}
         onScanClick={() => setShowScan(true)}
+        onProfileClick={() => setShowProfile(true)}
         currentUser={currentUser}
         currentUserName={currentUserName}
+        currentUserRole={currentUserRole}
+        onDashboardClick={() => setShowDashboard(true)}
         onLogout={handleLogout}
       />
 
@@ -199,8 +221,23 @@ export default function App() {
 
       <Products
         product={selectedProduct}
-        currentUser={currentUser}
+        currentUser={currentUser || ""}
+        currentUserRole={currentUserRole}
         onClose={() => setSelectedProduct(null)}
+      />
+      <Profile
+        isOpen={showProfile}
+        onClose={() => setShowProfile(false)}
+        currentUser={currentUser}
+        currentUserName={currentUserName}
+        currentUserRole={currentUserRole}
+        onDashboardClick={() => setShowDashboard(true)}
+        onProfileUpdate={handleProfileUpdate}
+      />
+      <Dashboard
+        isOpen={showDashboard}
+        onClose={() => setShowDashboard(false)}
+        currentUser={currentUser || ""}
       />
     </div>
   );
