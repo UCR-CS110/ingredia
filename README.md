@@ -41,6 +41,22 @@ Ingredia is a social networking for connecting others in regards to checking ing
 - **ScanModal**: UI placeholder with demo result (demo only with no real scanner)
 - **Backend**: load dataset for backend
 
+## Contributions
+
+### Allison Pham
+
+### Ahad Hassan
+
+### Lynvy Chang
+- Created the initial frontend design and layout for Ingredia.
+- Designed and implemented the main user interface pages, including the product browsing page, product cards, scan modal, preferences modal, and navigation layout.
+- Continued improving the visual design to make the app cleaner, more modern, and similar to ingredient-checking apps like Yuka.
+- Implemented the login and create account pages.
+- Added the authentication flow for users to sign up, log in, and log out.
+- Helped build the user profile experience, including displaying a personalized welcome message.
+- Worked on user preference features, including allergies and ingredients to avoid.
+- Helped connect the frontend pages together and made sure the app flow was clear for the demo.
+
 ## Assignment
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/c4wSHrp5)
 
