@@ -1,4 +1,75 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": "user_76bc27416e654d438172c24068b4d5c4",
+      "username": "allison",
+      "email": "allisonppham@gmail.com",
+      "password": "Bluepanda8*",
+      "role": "consumer",
+      "status": "verified",
+      "licenseNumber": "",
+      "licenseIssuer": "",
+      "deviceId": "device_f5974061c5744d098fd12cfbbbffff4f",
+      "lastDeviceId": "device_f5974061c5744d098fd12cfbbbffff4f",
+      "lastLoginAt": "2026-06-12T14:54:23.222Z",
+      "createdAt": "2026-06-12T14:54:23.222Z"
+    },
+    {
+      "id": "user_1fee24e3f219453287ebcb0354c73379",
+      "username": "a",
+      "email": "a@gmail.com",
+      "password": "Bluepanda8*",
+      "role": "consumer",
+      "status": "verified",
+      "licenseNumber": "",
+      "licenseIssuer": "",
+      "deviceId": "device_5544b04a81ce4995a28dd7f38dad6cb1",
+      "lastDeviceId": "device_5544b04a81ce4995a28dd7f38dad6cb1",
+      "lastLoginAt": "2026-06-12T14:55:01.595Z",
+      "createdAt": "2026-06-12T14:55:01.595Z"
+    },
+    {
+      "id": "user_802f186c4f0d42868abdf36fc97ad86f",
+      "username": "aasdfasdf",
+      "email": "tt@gmail.com",
+      "password": "Bluepanda8*",
+      "role": "consumer",
+      "status": "verified",
+      "licenseNumber": "",
+      "licenseIssuer": "",
+      "deviceId": "device_04d7b7a0f91c4da4a7de110268c326b5",
+      "lastDeviceId": "device_04d7b7a0f91c4da4a7de110268c326b5",
+      "lastLoginAt": "2026-06-12T14:55:22.562Z",
+      "createdAt": "2026-06-12T14:55:22.562Z"
+    },
+    {
+      "id": "user_6140e365d3444d5bb4cc8dad80dcb25a",
+      "username": "testing",
+      "email": "b@gmail.com",
+      "password": "Bluepanda8*",
+      "role": "consumer",
+      "status": "verified",
+      "licenseNumber": "",
+      "licenseIssuer": "",
+      "deviceId": "device_49e5e03f99904cc1b076249f6fedf06c",
+      "lastDeviceId": "device_49e5e03f99904cc1b076249f6fedf06c",
+      "lastLoginAt": "2026-06-12T15:13:12.800Z",
+      "createdAt": "2026-06-12T15:13:12.800Z"
+    },
+    {
+      "id": "user_5593120695d14cd9aab8047b1f6529df",
+      "username": "asdf",
+      "email": "c@gmail.com",
+      "password": "Bluepanda8*",
+      "role": "consumer",
+      "status": "verified",
+      "licenseNumber": "",
+      "licenseIssuer": "",
+      "deviceId": "device_616d472bebba464d8602818ff2bdb2f2",
+      "lastDeviceId": "device_616d472bebba464d8602818ff2bdb2f2",
+      "lastLoginAt": "2026-06-12T15:14:22.465Z",
+      "createdAt": "2026-06-12T15:14:22.465Z"
+    }
+  ],
   "recoveryChallenges": []
 }

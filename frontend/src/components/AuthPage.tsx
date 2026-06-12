@@ -30,6 +30,8 @@ export function AuthPage({ onLogin }: AuthPageProps) {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -41,12 +43,11 @@ export function AuthPage({ onLogin }: AuthPageProps) {
     e.preventDefault();
     setError("");
 
-    if (!email || !password) {
-      setError("Please fill in all fields.");
-      return;
-    }
-
     if (mode === "login") {
+      if (!email || !password) {
+        setError("Please fill in all fields.");
+        return;
+      }
       const res = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -57,6 +58,11 @@ export function AuthPage({ onLogin }: AuthPageProps) {
       localStorage.setItem("ingredia_session", data.email);
       localStorage.setItem("ingredia_name", data.name || "");
       onLogin(data.email, data.name || "");
+      return;
+    }
+
+    if (!name || !username || !email || !phone || !password) {
+      setError("All fields are required.");
       return;
     }
 
@@ -73,7 +79,7 @@ export function AuthPage({ onLogin }: AuthPageProps) {
     const res = await fetch("http://localhost:5000/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, name }),
+      body: JSON.stringify({ email, password, name, username, phone }),
     });
     const data = await res.json();
     if (!res.ok) { setError(data.error); return; }
@@ -88,6 +94,8 @@ export function AuthPage({ onLogin }: AuthPageProps) {
     setPassword("");
     setConfirmPassword("");
     setName("");
+    setUsername("");
+    setPhone("");
   }
 
   const Req = ({ passing, label }: { passing: boolean; label: string }) => (
@@ -107,16 +115,28 @@ export function AuthPage({ onLogin }: AuthPageProps) {
 
         <form onSubmit={handleSubmit} style={formStyle}>
           {mode === "signup" && (
-            <div>
-              <label style={labelStyle}>Name</label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Your name"
-                style={inputStyle}
-              />
-            </div>
+            <>
+              <div>
+                <label style={labelStyle}>Name</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Your full name"
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label style={labelStyle}>Username</label>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Choose a username"
+                  style={inputStyle}
+                />
+              </div>
+            </>
           )}
 
           <div>
@@ -129,6 +149,19 @@ export function AuthPage({ onLogin }: AuthPageProps) {
               style={inputStyle}
             />
           </div>
+
+          {mode === "signup" && (
+            <div>
+              <label style={labelStyle}>Phone Number</label>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="(555) 555-5555"
+                style={inputStyle}
+              />
+            </div>
+          )}
 
           <div>
             <label style={labelStyle}>Password</label>

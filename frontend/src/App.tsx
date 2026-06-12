@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { AuthPage } from './components/AuthPage';
 import { NavigationBar } from './components/NavigationBar';
 import { ProductCard } from './components/ProductCard';
-import { UserPreferencesModal } from './components/UserPreferencesModal';
-import { ScanModal } from './components/ScanModal';
-import { AuthPage } from './components/AuthPage';
 import { Products } from './components/Products';
+import { ScanModal } from './components/ScanModal';
+import { UserPreferencesModal } from './components/UserPreferencesModal';
+import { useState, useEffect } from 'react';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<string | null>(() => localStorage.getItem('ingredia_session'));
@@ -12,9 +12,11 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showPreferences, setShowPreferences] = useState(false);
   const [showScan, setShowScan] = useState(false);
-  const [userPreferences, setUserPreferences] = useState(null);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [userPreferences, setUserPreferences] = useState<any>(null);
+  const [allProducts, setAllProducts] = useState<any[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [loadingProducts, setLoadingProducts] = useState(false);
 
   function handleLogin(email: string, name: string) {
     localStorage.setItem('ingredia_session', email);
@@ -30,109 +32,40 @@ export default function App() {
     setCurrentUserName('');
   }
 
-  const mockProducts = [
-    {
-      id: '1',
-      name: 'Organic Almond Milk',
-      brand: "Nature's Best",
-      category: 'Drinks',
-      image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&h=400&fit=crop',
-      score: 85,
-      negatives: [{ icon: 'droplets', label: 'Additives', value: 'Contains 2 additives', severity: 'low' }],
-      positives: [{ icon: 'droplets', label: 'Low in calories', value: '30 calories per serving' }],
-      ingredients: ['Filtered Water', 'Almonds', 'Sea Salt', 'Sunflower Lecithin', 'Gellan Gum', 'Vitamin D2', 'Vitamin E']
-    },
-    {
-      id: '2',
-      name: 'Honey Nut Cheerios',
-      brand: 'General Mills',
-      category: 'Food',
-      image: 'https://images.unsplash.com/photo-1525385133512-2f3bdd039054?w=400&h=400&fit=crop',
-      score: 32,
-      negatives: [
-        { icon: 'plus', label: 'Additives', value: 'Contains additives to avoid', severity: 'high' },
-        { icon: 'droplets', label: 'Sugar', value: '12g per serving', severity: 'high' },
-        { icon: 'flame', label: 'Calories', value: '393 Cal per 100g', severity: 'medium' },
-        { icon: 'wheat', label: 'Sodium', value: '671mg - A bit too salty', severity: 'medium' }
-      ],
-      positives: [
-        { icon: 'wheat', label: 'Fiber', value: '5.6g per serving' },
-        { icon: 'droplets', label: 'Protein', value: '7.1g per serving' }
-      ],
-      ingredients: ['Whole Grain Oats', 'Sugar', 'Oat Bran', 'Cornstarch', 'Honey', 'Brown Sugar Syrup', 'Salt', 'Tripotassium Phosphate', 'Canola Oil', 'Natural Almond Flavor']
-    },
-    {
-      id: '3',
-      name: 'Greek Yogurt',
-      brand: 'Chobani',
-      category: 'Food',
-      image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=400&fit=crop',
-      score: 92,
-      negatives: [],
-      positives: [
-        { icon: 'droplets', label: 'Protein', value: '15g per serving' },
-        { icon: 'wheat', label: 'Low sugar', value: '4g natural sugars' }
-      ],
-      ingredients: ['Cultured Nonfat Milk', 'Live Active Cultures']
-    },
-    {
-      id: '4',
-      name: 'Energy Drink',
-      brand: 'Red Bull',
-      category: 'Drinks',
-      image: 'https://images.unsplash.com/photo-1622543925917-763c34c1a999?w=400&h=400&fit=crop',
-      score: 18,
-      negatives: [
-        { icon: 'droplets', label: 'Sugar', value: '27g per can', severity: 'high' },
-        { icon: 'plus', label: 'Additives', value: 'Multiple artificial additives', severity: 'high' },
-        { icon: 'flame', label: 'Caffeine', value: 'High caffeine content', severity: 'medium' }
-      ],
-      positives: [],
-      ingredients: ['Carbonated Water', 'Sucrose', 'Glucose', 'Citric Acid', 'Taurine', 'Sodium Bicarbonate', 'Magnesium Carbonate', 'Caffeine', 'Niacinamide', 'Calcium Pantothenate', 'Pyridoxine HCl', 'Vitamin B12', 'Natural and Artificial Flavors', 'Colors']
-    },
-    {
-      id: '5',
-      name: 'Organic Quinoa',
-      brand: 'Ancient Harvest',
-      category: 'Food',
-      image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=400&fit=crop',
-      score: 95,
-      negatives: [],
-      positives: [
-        { icon: 'wheat', label: 'Fiber', value: '5g per serving' },
-        { icon: 'droplets', label: 'Protein', value: '8g per serving' }
-      ],
-      ingredients: ['Organic Quinoa']
-    },
-    {
-      id: '6',
-      name: 'Vitamin C Serum',
-      brand: 'GlowSkin',
-      category: 'Cosmetics',
-      image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop',
-      score: 78,
-      negatives: [{ icon: 'plus', label: 'Preservatives', value: 'Contains phenoxyethanol', severity: 'low' }],
-      positives: [{ icon: 'droplets', label: 'Antioxidants', value: 'Rich in Vitamin C & E' }],
-      ingredients: ['Ascorbic Acid', 'Hyaluronic Acid', 'Vitamin E', 'Ferulic Acid', 'Aloe Vera', 'Purified Water', 'Phenoxyethanol']
-    }
-  ];
+  // Fetch from real API
+  useEffect(() => {
+    if (!currentUser) return;
+    setLoadingProducts(true);
+    fetch(`http://localhost:5000/api/products?q=${encodeURIComponent(searchQuery || 'organic')}`)
+      .then(r => r.json())
+      .then(data => {
+        const mapped = (Array.isArray(data) ? data : []).map((p: any) => ({
+          id: String(p._id ?? Math.random()),
+          name: p.name || 'Unknown',
+          brand: p.brand || '',
+          category: p.category || 'Food',
+          image: p.image || '',
+          score: p.score ?? 50,
+          negatives: p.negatives ?? [],
+          positives: p.positives ?? [],
+          ingredients: p.ingredients_raw
+            ? p.ingredients_raw.split(',').map((s: string) => s.trim()).filter(Boolean)
+            : [],
+        }));
+        setAllProducts(mapped);
+      })
+      .catch(() => setAllProducts([]))
+      .finally(() => setLoadingProducts(false));
+  }, [currentUser, searchQuery]);
 
   useEffect(() => {
-    if (!userPreferences) {
+    if (!currentUser) {
       setShowPreferences(true);
     }
   }, []);
 
   useEffect(() => {
-    let filtered: any[] = mockProducts;
-
-    if (searchQuery) {
-      filtered = filtered.filter(p =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.ingredients.some((i: string) => i.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
-    }
+    let filtered = [...allProducts];
 
     if (userPreferences) {
       filtered = filtered.map(product => {
@@ -140,7 +73,7 @@ export default function App() {
         const newNegatives = [...product.negatives];
 
         product.ingredients.forEach((ingredient: string) => {
-          (userPreferences as any).allergies.forEach((allergen: string) => {
+          userPreferences.allergies.forEach((allergen: string) => {
             if (ingredient.toLowerCase().includes(allergen.toLowerCase())) {
               adjustedScore = Math.max(0, adjustedScore - 30);
               newNegatives.unshift({ icon: 'plus', label: 'Contains allergen', value: `Contains ${allergen}`, severity: 'high' });
@@ -149,7 +82,7 @@ export default function App() {
         });
 
         product.ingredients.forEach((ingredient: string) => {
-          (userPreferences as any).avoidIngredients.forEach((avoid: string) => {
+          userPreferences.avoidIngredients.forEach((avoid: string) => {
             if (ingredient.toLowerCase().includes(avoid.toLowerCase())) {
               adjustedScore = Math.max(0, adjustedScore - 15);
               if (!newNegatives.some((n: any) => n.label === 'Unwanted ingredient')) {
@@ -164,14 +97,14 @@ export default function App() {
     }
 
     setFilteredProducts(filtered);
-  }, [searchQuery, userPreferences]);
+  }, [allProducts, userPreferences]);
 
   const handleSavePreferences = (preferences: any) => {
     setUserPreferences(preferences);
   };
 
   const handleProductClick = (productId: string | number) => {
-    const product = filteredProducts.find((p: any) => p.id === productId);
+    const product = filteredProducts.find((p: any) => p.id === String(productId));
     setSelectedProduct(product || null);
   };
 
@@ -204,7 +137,7 @@ export default function App() {
           </button>
         </section>
 
-        {userPreferences && ((userPreferences as any).dietaryRestrictions.length > 0 || (userPreferences as any).allergies.length > 0) && (
+        {userPreferences && (userPreferences.dietaryRestrictions.length > 0 || userPreferences.allergies.length > 0) && (
           <section className="mb-5 rounded-3xl border border-gray-100 bg-white p-4 shadow-sm">
             <div className="mb-3 flex items-center justify-between">
               <div>
@@ -216,10 +149,10 @@ export default function App() {
               </button>
             </div>
             <div className="flex flex-wrap gap-2">
-              {(userPreferences as any).dietaryRestrictions.map((dr: string) => (
+              {userPreferences.dietaryRestrictions.map((dr: string) => (
                 <span key={dr} className="rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700">{dr}</span>
               ))}
-              {(userPreferences as any).allergies.map((allergy: string) => (
+              {userPreferences.allergies.map((allergy: string) => (
                 <span key={allergy} className="rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-700">No {allergy}</span>
               ))}
             </div>
@@ -229,14 +162,20 @@ export default function App() {
         <div className="mb-3 flex items-center justify-between">
           <div>
             <h2 className="text-lg font-bold text-gray-900">Products</h2>
-            <p className="text-sm text-gray-500">{filteredProducts.length} products found</p>
+            <p className="text-sm text-gray-500">
+              {loadingProducts ? 'Loading...' : `${filteredProducts.length} products found`}
+            </p>
           </div>
           <button onClick={() => setShowPreferences(true)} className="rounded-full bg-white px-3 py-2 text-xs font-semibold text-gray-600 shadow-sm ring-1 ring-gray-100 hover:bg-gray-50">
             Preferences
           </button>
         </div>
 
-        {filteredProducts.length === 0 ? (
+        {loadingProducts ? (
+          <div className="rounded-3xl bg-white px-6 py-12 text-center shadow-sm">
+            <p className="text-sm text-gray-500">Loading products...</p>
+          </div>
+        ) : filteredProducts.length === 0 ? (
           <div className="rounded-3xl bg-white px-6 py-12 text-center shadow-sm">
             <p className="font-semibold text-gray-900">No products found</p>
             <p className="mt-1 text-sm text-gray-500">Try a different search term.</p>

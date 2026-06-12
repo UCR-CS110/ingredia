@@ -17,6 +17,7 @@
     - `npm install mongodb mongoose bcryptjs dotenv`
 - Environment variables (ensure it's under backend/)
 - Frontend
+    - `cd frontend`
     - Dev: `npm start`
         - Build: `npm run build` (deploy the `build/` folder to a static host)
         - Open http://localhost:3000
