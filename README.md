@@ -16,7 +16,6 @@
     - `npm install`
     - `npm install lucide-react`
     - `npm install mongodb mongoose bcryptjs dotenv`
-    - `npm install @zxing/browser`
 - Environment variables (ensure it's under backend/)
 - Backend
     - Open up 1st terminal: `cd backend && node seed.js`
