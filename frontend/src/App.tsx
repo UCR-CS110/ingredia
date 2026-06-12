@@ -135,7 +135,7 @@ export default function App() {
     <div className="min-h-screen bg-gray-50">
       <NavigationBar
         onSearchChange={setSearchQuery}
-        onScanClick={() => setShowScan(true)}
+        // onScanClick={() => setShowScan(true)}
         onProfileClick={() => setShowProfile(true)}
         currentUser={currentUser}
         currentUserName={currentUserName}
@@ -151,12 +151,12 @@ export default function App() {
           <p className="mt-2 text-sm leading-relaxed text-green-50">
             Search, scan, and compare products based on ingredients, additives, and your preferences.
           </p>
-          <button
+          {/* <button
             onClick={() => setShowScan(true)}
             className="mt-4 w-full rounded-2xl bg-white py-3 text-sm font-semibold text-green-700 shadow-sm transition hover:bg-green-50"
           >
             Scan a Product
-          </button>
+          </button> */}
         </section>
 
         {userPreferences && (userPreferences.dietaryRestrictions.length > 0 || userPreferences.allergies.length > 0) && (
@@ -217,7 +217,7 @@ export default function App() {
         onSave={handleSavePreferences}
       />
 
-      <ScanModal isOpen={showScan} onClose={() => setShowScan(false)} />
+      {/* <ScanModal isOpen={showScan} onClose={() => setShowScan(false)} /> */}
 
       <Products
         product={selectedProduct}

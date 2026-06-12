@@ -175,8 +175,8 @@ export function Dashboard({ isOpen, onClose, currentUser }: DashboardProps) {
                   </span>
                 </div>
                 <div className="mt-3 space-y-1 text-xs text-gray-500">
-                  <p>📧 {u.email}</p>
-                  <p>📱 {u.phone || "—"}</p>
+                  <p>Profile{u.email}</p>
+                  <p>{u.phone || "—"}</p>
                   <p>📅 Joined {new Date(u.createdAt).toLocaleDateString()}</p>
                 </div>
               </div>

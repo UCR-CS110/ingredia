@@ -202,10 +202,10 @@ export function AuthPage({ onLogin }: AuthPageProps) {
                 Don't have an account?{" "}
                 <button onClick={() => switchMode("signup")} style={switchButtonStyle}>Sign up</button>
               </p>
-              <p style={{ ...switchTextStyle, marginTop: 8 }}>
+              {/* <p style={{ ...switchTextStyle, marginTop: 8 }}>
                 Forgot your password?{" "}
                 <button onClick={() => switchMode("reset")} style={switchButtonStyle}>Reset it</button>
-              </p>
+              </p> */}
             </>
           )}
           {(mode === "signup" || mode === "reset") && (

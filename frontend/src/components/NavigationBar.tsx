@@ -3,7 +3,7 @@ import { useState } from "react";
 
 interface NavigationBarProps {
   onSearchChange: (query: string) => void;
-  onScanClick: () => void;
+  onScanClick?: () => void;
   onProfileClick: () => void;
   onDashboardClick?: () => void;
   currentUser?: string | null;
@@ -63,11 +63,11 @@ export function NavigationBar({ onSearchChange, onScanClick, onProfileClick, onD
               className="w-full rounded-2xl border border-gray-100 bg-gray-50 py-3 pl-11 pr-4 text-sm shadow-sm outline-none transition placeholder:text-gray-400 focus:border-green-300 focus:bg-white focus:ring-2 focus:ring-green-100"
               value={searchQuery} onChange={handleSearchChange} />
           </div>
-          <button onClick={onScanClick}
+          {/* <button onClick={onScanClick}
             className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-green-600 text-white shadow-md transition hover:bg-green-700 active:scale-95"
             aria-label="Scan product">
             <ScanBarcode className="h-5 w-5" />
-          </button>
+          </button> */}
         </div>
       </div>
     </nav>
