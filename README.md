@@ -16,12 +16,13 @@
     - `npm install`
     - `npm install lucide-react`
     - `npm install mongodb mongoose bcryptjs dotenv`
+    - `npm install @zxing/browser`
 - Environment variables (ensure it's under backend/)
 - Backend
-    - `cd backend && node seed.js`
-    - `cd backend && node server.js`
+    - Open up 1st terminal: `cd backend && node seed.js`
+    - Open up 2nd terminal: `cd backend && node server.js`
 - Frontend
-    - `cd frontend`
+    - Open up 3rd terminal: `cd frontend`
     - Dev: `npm start`
         - Build: `npm run build` (deploy the `build/` folder to a static host)
         - Open http://localhost:3000

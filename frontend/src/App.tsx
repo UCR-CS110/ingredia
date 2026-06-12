@@ -5,10 +5,14 @@ import { UserPreferencesModal } from './components/UserPreferencesModal';
 import { ScanModal } from './components/ScanModal';
 import { AuthPage } from './components/AuthPage';
 import { Products } from './components/Products';
+import { Profile } from './components/Profile';
+import { Dashboard } from './components/Dashboard';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<string | null>(() => localStorage.getItem('ingredia_session'));
   const [currentUserName, setCurrentUserName] = useState(() => localStorage.getItem('ingredia_name') || '');
+  const [currentUserRole, setCurrentUserRole] = useState(() => localStorage.getItem('ingredia_role') || 'explorer');
+  const [showDashboard, setShowDashboard] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showPreferences, setShowPreferences] = useState(false);
   const [showScan, setShowScan] = useState(false);
@@ -20,6 +24,7 @@ export default function App() {
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [loadingProducts, setLoadingProducts] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   function handleLogin(email: string, name: string) {
     localStorage.setItem('ingredia_session', email);
@@ -33,6 +38,7 @@ export default function App() {
     localStorage.removeItem('ingredia_name');
     setCurrentUser(null);
     setCurrentUserName('');
+    setCurrentUserRole('explorer');
   }
 
   // Fetch products - on login load defaults, on search debounce 500ms
@@ -107,6 +113,10 @@ export default function App() {
     setFilteredProducts(filtered);
   }, [allProducts, userPreferences]);
 
+  const handleProfileUpdate = (name: string) => {
+    setCurrentUserName(name);
+  };
+
   const handleSavePreferences = (preferences: any) => {
     setUserPreferences(preferences);
     localStorage.setItem('ingredia_preferences', JSON.stringify(preferences));
@@ -126,8 +136,11 @@ export default function App() {
       <NavigationBar
         onSearchChange={setSearchQuery}
         onScanClick={() => setShowScan(true)}
+        onProfileClick={() => setShowProfile(true)}
         currentUser={currentUser}
         currentUserName={currentUserName}
+        currentUserRole={currentUserRole}
+        onDashboardClick={() => setShowDashboard(true)}
         onLogout={handleLogout}
       />
 
@@ -208,8 +221,23 @@ export default function App() {
 
       <Products
         product={selectedProduct}
-        currentUser={currentUser}
+        currentUser={currentUser || ""}
+        currentUserRole={currentUserRole}
         onClose={() => setSelectedProduct(null)}
+      />
+      <Profile
+        isOpen={showProfile}
+        onClose={() => setShowProfile(false)}
+        currentUser={currentUser}
+        currentUserName={currentUserName}
+        currentUserRole={currentUserRole}
+        onDashboardClick={() => setShowDashboard(true)}
+        onProfileUpdate={handleProfileUpdate}
+      />
+      <Dashboard
+        isOpen={showDashboard}
+        onClose={() => setShowDashboard(false)}
+        currentUser={currentUser || ""}
       />
     </div>
   );
