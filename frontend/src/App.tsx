@@ -12,7 +12,10 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showPreferences, setShowPreferences] = useState(false);
   const [showScan, setShowScan] = useState(false);
-  const [userPreferences, setUserPreferences] = useState<any>(null);
+  const [userPreferences, setUserPreferences] = useState<any>(() => {
+    const saved = localStorage.getItem('ingredia_preferences');
+    return saved ? JSON.parse(saved) : null;
+  });
   const [allProducts, setAllProducts] = useState<any[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
@@ -106,6 +109,7 @@ export default function App() {
 
   const handleSavePreferences = (preferences: any) => {
     setUserPreferences(preferences);
+    localStorage.setItem('ingredia_preferences', JSON.stringify(preferences));
   };
 
   const handleProductClick = (productId: string | number) => {
