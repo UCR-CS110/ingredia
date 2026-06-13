@@ -58,20 +58,21 @@ Ingredia is a social networking for connecting others in regards to checking ing
     - Open up 3rd terminal: `cd frontend`
         - Run everytime
     - Dev: `npm start`
+            - Open `http://localhost:3000`
         - Build: `npm run build` (deploy the `build/` folder to a static host)
-        - Open http://localhost:3000
 
 ## Team Contributions
 ### Ahad Hassan
-    - Developed the secure user authentication flow (Sign Up and Log In) using Express.js and bcryptjs, ensuring user credentials are safely managed in MongoDB.
-    - Finalized key React frontend components (such as the LoginPage and global layouts), polishing the UI to ensure a seamless and modern user experience.
-    - Conducted end-to-end testing of the application flow, verifying that user sessions, preference saving, and product rendering worked smoothly together.
-    - Authored and structured the project's README documentation, detailing the tech stack, deployment instructions, and feature overviews.
+**Fullstack & Authentication**
+- Developed the secure user authentication flow (Sign Up and Log In) using Express.js and bcryptjs, ensuring user credentials are safely managed in MongoDB.
+- Finalized key React frontend components (such as the LoginPage and global layouts), polishing the UI to ensure a seamless and modern user experience.
+- Conducted end-to-end testing of the application flow, verifying that user sessions, preference saving, and product rendering worked smoothly together.
+- Authored and structured the project's README documentation, detailing the tech stack, deployment instructions, and feature overviews.
 
 ### Allison Pham
 **Frontend**
 - Adjusted preferences filtering
-- Adjust image logic so that the default image icon only displayed for any items that had images attached
+- Adjusted image logic so that the default image icon only displayed for any items that had images attached
 - Data: display specific details for positive vs. negative in pop up card
 - Search functionality
 - Items
@@ -81,7 +82,7 @@ Ingredia is a social networking for connecting others in regards to checking ing
 - Have data populate automatically
 - Fetch Open Food Facts API and Kaggle Food Ingredients List dataset
     - Implement data grabbing from each
-- Ensure data loads dynmically (where it automatically populates)
+- Ensure data loads dynamically (where it automatically populates)
 - Switch from local storage to using MongoDB
     - Setup MongoDB storage for reviews/comments, user data information to connect each user account with the aspects they interact with (e.g. adding a comment)
     - Test database to ensure updates made through the frontend properly loads in the database
@@ -95,14 +96,14 @@ Ingredia is a social networking for connecting others in regards to checking ing
     - Admin only: can delete other users' comments
 - Add profile button with 3 options: profile, password, account
     - Profile: ability to update profile (name, username, phone number)
-    - Passowrd: can change password
+    - Password: can change password
     - Account: users can see which roles they have
         - Ex: for admin, it will say "Admin - full access"
 - Fix preferences functionality
     - Preferences page would pop up every time the page was reloaded
     - Preferences originally didn't save when the page was reloaded
 - Scan products with option to request access to camera, handle logic if items weren't in the database, and fix logic
-    - Scanning feature ended up being taken out due to the libraries having issues with scannining QR codes (e.g. it needed to match specifically with an item)
+    - Scanning feature ended up being taken out due to the libraries having issues with scanning QR codes (e.g. it needed to match specifically with an item)
         - Attempted with 2 different libraries
 
 **General**
@@ -110,6 +111,7 @@ Ingredia is a social networking for connecting others in regards to checking ing
 - Test each aspect by noting down any bugs that arose
 
 ### Lynvy Chang
+**Frontend & Design**
 - Created the initial frontend design and layout for Ingredia.
 - Designed and implemented the main user interface pages, including the product browsing page, product cards, scan modal, preferences modal, and navigation layout.
 - Continued improving the visual design to make the app cleaner, more modern, and similar to ingredient-checking apps like Yuka.
