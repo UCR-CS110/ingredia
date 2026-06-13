@@ -42,10 +42,48 @@ Ingredia is a social networking for connecting others in regards to checking ing
 - **Backend**: load dataset for backend
 
 ## Contributions
+### Ahad Hassan
 
 ### Allison Pham
+**Frontend**
+- Adjusted preferences filtering
+- Adjust image logic so that the default image icon only displayed for any items that had images attached
+- Data: display specific details for positive vs. negative in pop up card
+- Search functionality
+- Items
+    - Fix pop up cards (when clicking "View details" for items)
 
-### Ahad Hassan
+**Backend and Databases**
+- Have data populate automatically
+- Fetch Open Food Facts API and Kaggle Food Ingredients List dataset
+    - Implement data grabbing from each
+- Ensure data loads dynmically (where it automatically populates)
+- Switch from local storage to using MongoDB
+    - Setup MongoDB storage for reviews/comments, user data information to connect each user account with the aspects they interact with (e.g. adding a comment)
+    - Test database to ensure updates made through the frontend properly loads in the database
+- Different roles for accounts
+    - Roles: explorer (default role), expert, admin
+    - Can edit admin role through database
+    - Admin has access to a dashboard featuring 2 options: users and reviews
+        - Users: any user with the admin role can see how many users have each role, searchability (by name, username, or email), lists all users (name, username, email, phone number, join date, role for each user)
+        - Reviews: searchability (by email, item name, comment content), list all reviews, ability to delete comments from the admin dashboard
+    - All users: ability to edit own and delete own comments
+    - Admin only: can delete other users' comments
+- Add profile button with 3 options: profile, password, account
+    - Profile: ability to update profile (name, username, phone number)
+    - Passowrd: can change password
+    - Account: users can see which roles they have
+        - Ex: for admin, it will say "Admin - full access"
+- Fix preferences functionality
+    - Preferences page would pop up every time the page was reloaded
+    - Preferences originally didn't save when the page was reloaded
+- Scan products with option to request access to camera, handle logic if items weren't in the database, and fix logic
+    - Scanning feature ended up being taken out due to the libraries having issues with scannining QR codes (e.g. it needed to match specifically with an item)
+        - Attempted with 2 different libraries
+
+**General**
+- Debugged frontend, backend, and database features
+- Test each aspect by noting down any bugs that arose
 
 ### Lynvy Chang
 - Created the initial frontend design and layout for Ingredia.
