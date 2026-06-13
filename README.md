@@ -1,65 +1,62 @@
 # Ingredia
-(Cover image)
+<div align="center">
+    <strong>Ingredia</strong> is a web app for evaluating product ingredients.
+</div>
 
-- Frontend:
-    [![React](https://img.shields.io/badge/-React-%2320232a.svg?style=flat-square&logo=react&logoColor=%2361DAFB)](https://react.dev/)
-    [![TypeScript](https://img.shields.io/badge/-TypeScript-%23007ACC.svg?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-    [![JavaScript](https://img.shields.io/badge/-JavaScript-%23323330.svg?style=flat-square&logo=javascript&logoColor=%23F7DF1E)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-- Backend:
-    [![Node.js](https://img.shields.io/badge/-Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-    [![Express.js](https://img.shields.io/badge/-Express.js-000000?style=flat-square&logo=express&logoColor=white)](https://expressjs.com/)
-- Databases:
-    [![MongoDB](https://img.shields.io/badge/-MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-- Data: [Kaggle - Food Ingredients List](https://www.kaggle.com/datasets/datafiniti/food-ingredient-lists), [Open Food Facts API](https://world.openfoodfacts.org/data)
+<div align="center">
+    Flag allergens, additives, and unwanted ingredients, while browsing product reviews.
+</div>
+
+<div align="center">
+    <img src="cover.png" width="600" />
+    <!-- ![Cover](cover.png) -->
+</div>
+
+<div align="center">
+
+[![React](https://img.shields.io/badge/-React-%2320232a.svg?style=flat-square&logo=react&logoColor=%2361DAFB)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/-TypeScript-%23007ACC.svg?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/-Tailwind_CSS-%2338B2AC.svg?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Express.js](https://img.shields.io/badge/-Express.js-000000?style=flat-square&logo=express&logoColor=white)](https://expressjs.com/)
+[![Node.js](https://img.shields.io/badge/-Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/-MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Mongoose](https://img.shields.io/badge/-Mongoose-880000?style=flat-square&logo=mongoose&logoColor=white)](https://mongoosejs.com/)
+[![Figma](https://img.shields.io/badge/-Figma-%23F24E1E.svg?style=flat-square&logo=figma&logoColor=white)](https://figma.com/)
+
+</div>
 
 ## Project Overview
-- **Goal:** Help users evaluate product ingredients against personal dietary preferences and provide lightweight community reviews for safety-awareness.
-- **Audience:** Consumers with allergies or dietary restrictions and medical professionals/reviewers who can provide product assessments.
-
-Ingredia is a social networking for connecting others in regards to checking ingredients within products to indicate if it is healthy, hazardous, unsafe, etc. This app helps users evaluate product ingredients against personal preferences (allergies and ingredients to avoid) and view simple product reviews.
+Ingredia is a social networking for connecting others in regards to checking ingredients within products to indicate if it is healthy, hazardous, unsafe, etc. The web app helps users evaluate product ingredients against personal preferences (allergies and ingredients to avoid) and view product reviews.
+- **Goal:** help users evaluate product ingredients against personal dietary preferences and provide lightweight community reviews for safety-awareness
+- **Audience:** consumers with allergies or dietary restrictions and medical professionals/reviewers who can provide product assessments
 
 ## Features
-- **LoginPage**: client-side login (works)
-- **Product list & search**: renders demo products and supports searching (works)
-- **ProductCard**: shows image, score, ingredients, and flags potential conflicts with preferences (works)
-- **UserPreferencesModal**: set allergies and avoid listed items (works)
-- **ReviewSection**: post reviews (works)
-- **ScanModal**: UI placeholder with demo result (demo only with no real scanner)
-- **Backend**: load dataset for backend
+| **Overview** | **Details** |
+|---|---|
+| Auth | • Users can register (name, username, email, phone, password)<br>• Password strength validation<br>• Login and logout options |
+| Products | • Search products through dataset<br>• Filter by category and dietary restrictions<br>• Flag potential conflicts with preferences<br>• Ingredient analysis (score, positive, negative)<br>• English-specific filtering |
+| Reviews and Comments | • View available user reviews per product<br>• Post a review with star rating and comment<br>• All users can edit their own reviews |
+| User Profile | • View and update name, username, and phone<br>• Change password option<br>• Role display (explorer, expert, admin) |
+| Admin Dashboard | • View all users and reviews<br>• Can delete any user review (within reason) |
+| Database | • Store core information into MongoDB<br>• User model - stores user info<br>• Review model - stores reviews per product |
 
-## Project Deployment Instructions: Steps on How to Run Code
+## Project Deployment
+### Tech Stack
+| **Category** | **Technologies (Tools, Libraries, Frameworks, APIs)** |
+|---|---|
+| Frontend | React, TypeScript, Tailwind CSS |
+| Backend | Express.js (ran on Node.js, files handled in JavaScript) |
+| Databases | MongoDB, Mongoose |
+| APIs and Data | [Open Food Facts API](https://world.openfoodfacts.org/data), [Kaggle - Food Ingredients List](https://www.kaggle.com/datasets/datafiniti/food-ingredient-lists) |
 
-### Tools, Libraries, Frameworks, and APIs
-- **Frontend:** React, TypeScript, JavaScript, Lucide-React
-- **Backend:** Node.js, Express.js, bcryptjs, dotenv
-- **Databases:** MongoDB, Mongoose
-- **APIs & Data:** Open Food Facts API, Kaggle Food Ingredients List dataset
-
-- Ensure Git is installed (download based on OS)
-- Clone this GitHub repository using an IDE (e.g. Visual Studio Code)
-    - Click "Code" (green button) > HTTPS > copy `https://github.com/UCR-CS110/final-project-ingredia-ahad-allison-lynvy.git`
-- Run `git clone https://github.com/UCR-CS110/final-project-ingredia-ahad-allison-lynvy.git`
-- Installation commands
-    - `npm install`
-    - `npm install lucide-react`
-    - `npm install mongodb mongoose bcryptjs dotenv express`
-- Environment variables (ensure it's under backend/)
-    Create a `.env` file in the `backend/` directory and add the following:
-    ```env
-    PORT=5000
-    MONGO_URI=mongodb+srv://<your_username>:<your_password>@<your_cluster_url>/<database_name>?retryWrites=true&w=majority
-    ```
-- Backend
-    - Open up 1st terminal: `cd backend && node seed.js`
-        - Only need to run once
-    - Open up 2nd terminal: `cd backend && node server.js`
-        - Run everytime
-- Frontend
-    - Open up 3rd terminal: `cd frontend`
-        - Run everytime
-    - Dev: `npm start`
-            - Open `http://localhost:3000`
-        - Build: `npm run build` (deploy the `build/` folder to a static host)
+### Instructions: Steps on How to Run 
+| **Step** | **Instructions** |
+|---|---|
+| Git + GitHub Setup | • Ensure Git is installed ([download](https://git-scm.com/install/windows) based on OS)<br>• Clone [this GitHub repository](https://github.com/UCR-CS110/final-project-ingredia-ahad-allison-lynvy) using an IDE (e.g. Visual Studio Code)<br>&nbsp;&nbsp;&nbsp;&nbsp;• Click "Code" (green button) > HTTPS > copy `https://github.com/UCR-CS110/final-project-ingredia-ahad-allison-lynvy.git`<br>• Run `git clone "https://github.com/UCR-CS110/final-project-ingredia-ahad-allison-lynvy.git"` |
+| Installation | • Run `npm install`<br>• Run `npm install lucide-react`<br>• Run `npm install mongodb mongoose bcryptjs dotenv express` |
+| Environment Variables | Create a `.env` file in the `backend/` folder.<br><br>`PORT=5000`<br>`MONGO_URI=mongodb+srv://<username>:<password>@<cluster_url>/<database_name>?retryWrites=true&w=majority` |
+| Backend | • Open up 1st terminal: `cd backend && node seed.js`<br>&nbsp;&nbsp;&nbsp;&nbsp;• Only need to run once<br>• Open up 2nd terminal: `cd backend && node server.js`<br>&nbsp;&nbsp;&nbsp;&nbsp;• Run everytime |
+| Frontend | • Open up 3rd terminal: `cd frontend`<br>&nbsp;&nbsp;&nbsp;&nbsp;• Run everytime<br>• Dev: `npm start`<br>&nbsp;&nbsp;&nbsp;&nbsp;• Build: `npm run build` (deploy the `build/` folder to a static host)<br>&nbsp;&nbsp;&nbsp;&nbsp;• Open http://localhost:3000 |
 
 ## Team Contributions
 ### Ahad Hassan
@@ -71,29 +68,28 @@ Ingredia is a social networking for connecting others in regards to checking ing
 
 ### Allison Pham
 **Frontend**
-- Adjusted preferences filtering
-- Adjusted image logic so that the default image icon only displayed for any items that had images attached
-- Data: display specific details for positive vs. negative in pop up card
-- Search functionality
-- Items
-    - Fix pop up cards (when clicking "View details" for items)
+- Search functionality for products
+- Preferences filtering with implementation of save (regardless of reloads)
+- Pop up cards
+    - Update pop up cards for products with details for positive vs. negative breakdown
+    - Fix "View details" to ensure a card pops up
+- Image fallback logic for missing product images (image icon for products are only displayed for items that had images attached)
 
 **Backend and Databases**
-- Have data populate automatically
-- Fetch Open Food Facts API and Kaggle Food Ingredients List dataset
-    - Implement data grabbing from each
-- Ensure data loads dynamically (where it automatically populates)
-- Switch from local storage to using MongoDB
+- Migrated from storing locally to MongoDB database
     - Setup MongoDB storage for reviews/comments, user data information to connect each user account with the aspects they interact with (e.g. adding a comment)
     - Test database to ensure updates made through the frontend properly loads in the database
-- Different roles for accounts
-    - Roles: explorer (default role), expert, admin
-    - Can edit admin role through database
-    - Admin has access to a dashboard featuring 2 options: users and reviews
-        - Users: any user with the admin role can see how many users have each role, searchability (by name, username, or email), lists all users (name, username, email, phone number, join date, role for each user)
-        - Reviews: searchability (by email, item name, comment content), list all reviews, ability to delete comments from the admin dashboard
-    - All users: ability to edit own and delete own comments
-    - Admin only: can delete other users' comments
+- Connect user accounts to their interactions, reviews/comments, etc.
+- Fetch data from datasets (Open Food Facts API and Kaggle Food Ingredients List)
+- Ensure data loads dynamically (where it automatically populates)
+- Implement different roles for user accounts
+    - Roles: explorer (default), expert, admin
+        - Admin role is assignable through database
+    - Admin dashboard features 2 views: users and reviews
+        - Users: see how many users have each role (3 types of roles), searchability (by name, username, or email), lists all users (name, username, email, phone number, join date, role)
+        - Reviews: searchability (by email, item name, comment content), list all reviews, ability to delete comments from dashboard
+    - All users: ability to edit own and  their own reviews
+        - Admin only: can delete other users' comments
 - Add profile button with 3 options: profile, password, account
     - Profile: ability to update profile (name, username, phone number)
     - Password: can change password
@@ -103,15 +99,14 @@ Ingredia is a social networking for connecting others in regards to checking ing
     - Preferences page would pop up every time the page was reloaded
     - Preferences originally didn't save when the page was reloaded
 - Scan products with option to request access to camera, handle logic if items weren't in the database, and fix logic
-    - Scanning feature ended up being taken out due to the libraries having issues with scanning QR codes (e.g. it needed to match specifically with an item)
+    - Scanning feature ended up being taken out due to the libraries having issues with scannining QR codes (e.g. it needed to match specifically with an item)
         - Attempted with 2 different libraries
 
 **General**
-- Debugged frontend, backend, and database features
+- Debugged frontend, backend, and database features end-to-end
 - Test each aspect by noting down any bugs that arose
 
 ### Lynvy Chang
-**Frontend & Design**
 - Created the initial frontend design and layout for Ingredia.
 - Designed and implemented the main user interface pages, including the product browsing page, product cards, scan modal, preferences modal, and navigation layout.
 - Continued improving the visual design to make the app cleaner, more modern, and similar to ingredient-checking apps like Yuka.
