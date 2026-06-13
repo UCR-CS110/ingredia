@@ -28,6 +28,13 @@ Ingredia is a social networking for connecting others in regards to checking ing
 - **Backend**: load dataset for backend
 
 ## Project Deployment Instructions: Steps on How to Run Code
+
+### Tools, Libraries, Frameworks, and APIs
+- **Frontend:** React, TypeScript, JavaScript, Lucide-React
+- **Backend:** Node.js, Express.js, bcryptjs, dotenv
+- **Databases:** MongoDB, Mongoose
+- **APIs & Data:** Open Food Facts API, Kaggle Food Ingredients List dataset
+
 - Ensure Git is installed (download based on OS)
 - Clone this GitHub repository using an IDE (e.g. Visual Studio Code)
     - Click "Code" (green button) > HTTPS > copy `https://github.com/UCR-CS110/final-project-ingredia-ahad-allison-lynvy.git`
@@ -37,8 +44,11 @@ Ingredia is a social networking for connecting others in regards to checking ing
     - `npm install lucide-react`
     - `npm install mongodb mongoose bcryptjs dotenv express`
 - Environment variables (ensure it's under backend/)
-    `PORT=5000<br>
-    MONGO_URI=`
+    Create a `.env` file in the `backend/` directory and add the following:
+    ```env
+    PORT=5000
+    MONGO_URI=mongodb+srv://<your_username>:<your_password>@<your_cluster_url>/<database_name>?retryWrites=true&w=majority
+    ```
 - Backend
     - Open up 1st terminal: `cd backend && node seed.js`
         - Only need to run once
@@ -53,6 +63,10 @@ Ingredia is a social networking for connecting others in regards to checking ing
 
 ## Team Contributions
 ### Ahad Hassan
+    - Developed the secure user authentication flow (Sign Up and Log In) using Express.js and bcryptjs, ensuring user credentials are safely managed in MongoDB.
+    - Finalized key React frontend components (such as the LoginPage and global layouts), polishing the UI to ensure a seamless and modern user experience.
+    - Conducted end-to-end testing of the application flow, verifying that user sessions, preference saving, and product rendering worked smoothly together.
+    - Authored and structured the project's README documentation, detailing the tech stack, deployment instructions, and feature overviews.
 
 ### Allison Pham
 **Frontend**

@@ -12,7 +12,7 @@ function ensureStoreFile() {
   }
 
   if (!fs.existsSync(storePath)) {
-    fs.writeFileSync(storePath, JSON.stringify({ users: [], recoveryChallenges: [] }, null, 2));
+    fs.writeFileSync(storePath, JSON.stringify({ users: [], recoveryChallenges: [], notifications: [] }, null, 2));
   }
 }
 
@@ -26,9 +26,10 @@ function readStore() {
     return {
       users: Array.isArray(parsed.users) ? parsed.users : [],
       recoveryChallenges: Array.isArray(parsed.recoveryChallenges) ? parsed.recoveryChallenges : [],
+      notifications: Array.isArray(parsed.notifications) ? parsed.notifications : [],
     };
   } catch {
-    return { users: [], recoveryChallenges: [] };
+    return { users: [], recoveryChallenges: [], notifications: [] };
   }
 }
 
