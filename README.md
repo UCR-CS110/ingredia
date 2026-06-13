@@ -57,6 +57,9 @@ Ingredia is a social networking for connecting others in regards to checking ing
 - Worked on user preference features, including allergies and ingredients to avoid.
 - Helped connect the frontend pages together and made sure the app flow was clear for the demo.
 
+## AI Usage
+We used AI when we first started to help further our ideas and come up with more features. We also used AI to debug certain parts of our code and to learn how to improve the aesthetic of our project.
+
 ## Assignment
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/c4wSHrp5)
 
